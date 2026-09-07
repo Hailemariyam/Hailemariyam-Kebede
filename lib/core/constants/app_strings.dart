@@ -28,12 +28,26 @@ class AppStrings {
   static const String pinDigitsOnly = 'PIN must contain digits only';
 
   // Home
-  static const String balanceLabel = 'M-PESA balance';
-  static const String recentActivity = 'Recent activity';
+  static const String mainBalance = 'Main Balance';
+  static const String addMoney = 'Add Money';
+  static const String rewardBalance = 'Reward Balance';
+  static const String exitBalance = 'Exit Balance';
+  static const String hiddenAmount = '••••••••';
+  static const String hiddenShort = '••••';
+  static const String services = 'Services';
+  static const String transactions = 'Transactions';
   static const String seeAll = 'See all';
   static const String signOut = 'Sign out';
   static const String signOutConfirmTitle = 'Sign out?';
   static const String signOutConfirmBody =
       'You will need your PIN to sign back in.';
   static const String cancel = 'Cancel';
+
+  // Service tiles
+  static const String merchantPayment = 'Merchant payment';
+  static const String billPayment = 'Bill payment';
+  static const String creditAndSaving = 'Credit & Saving';
+  static const String transferMoney = 'Transfer money';
+  static const String airtimePackage = 'Airtime/Package';
+  static const String moreServices = 'More services';
 }

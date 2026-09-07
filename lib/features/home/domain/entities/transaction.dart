@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 enum TransactionType { sent, received }
 
-/// A single line item in the recent-activity list.
+/// A single line item in the transactions list.
 class TransactionEntity extends Equatable {
   const TransactionEntity({
     required this.id,
@@ -10,6 +10,7 @@ class TransactionEntity extends Equatable {
     required this.subtitle,
     required this.amount,
     required this.type,
+    required this.channel,
   });
 
   final String id;
@@ -18,8 +19,11 @@ class TransactionEntity extends Equatable {
   final double amount;
   final TransactionType type;
 
+  /// Payment channel shown as the badge label, e.g. "CBE", "M-PESA".
+  final String channel;
+
   bool get isIncoming => type == TransactionType.received;
 
   @override
-  List<Object?> get props => [id, title, subtitle, amount, type];
+  List<Object?> get props => [id, title, subtitle, amount, type, channel];
 }

@@ -28,13 +28,13 @@ class SignInFooter extends StatelessWidget {
         _link(
           AppStrings.contactUs,
           onContactUs,
-          trailingIcon: Iconsax.headphone,
+          trailingIcon: Iconsax.document_text,
         ),
         _dot(),
         _link(
           AppStrings.termsAndConditions,
           onTerms,
-          trailingIcon: Iconsax.document_text,
+          trailingIcon: Iconsax.headphone,
         ),
       ],
     );

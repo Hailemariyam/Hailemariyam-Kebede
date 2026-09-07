@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../domain/entities/transaction.dart';
 
-/// One row in the recent-activity list.
+/// One row in the transactions list: a coloured channel badge (e.g. CBE,
+/// M-PESA), the counterparty name + channel, and the signed amount.
 class TransactionTile extends StatelessWidget {
   const TransactionTile({
     super.key,
@@ -22,30 +22,11 @@ class TransactionTile extends StatelessWidget {
     final amount =
         '${incoming ? '+' : '-'} ${Formatters.money(transaction.amount)}';
 
-    return Container(
-      margin: EdgeInsets.fromLTRB(20, 0, 20, isLast ? 0 : 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: isLast ? 0 : 14),
       child: Row(
         children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: incoming
-                  ? AppColors.success.withValues(alpha: 0.12)
-                  : AppColors.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              incoming ? Iconsax.arrow_down_1 : Iconsax.arrow_up_3,
-              color: incoming ? AppColors.success : AppColors.primary,
-              size: 20,
-            ),
-          ),
+          _ChannelBadge(label: transaction.channel),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -79,6 +60,47 @@ class TransactionTile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ChannelBadge extends StatelessWidget {
+  const _ChannelBadge({required this.label});
+
+  final String label;
+
+  Color get _color {
+    switch (label.toUpperCase()) {
+      case 'CBE':
+        return const Color(0xFF6A1B9A);
+      case 'M-PESA':
+      case 'MPESA':
+        return AppColors.primary;
+      case 'TELEBIRR':
+        return const Color(0xFF1565C0);
+      default:
+        return AppColors.textSecondary;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 42,
+      height: 42,
+      decoration: BoxDecoration(
+        color: _color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        label.length <= 5 ? label : label.substring(0, 5),
+        style: TextStyle(
+          fontSize: label.length <= 3 ? 12 : 9,
+          fontWeight: FontWeight.w800,
+          color: _color,
+        ),
       ),
     );
   }

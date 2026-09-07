@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
-/// 4×2 grid of primary money actions.
-class QuickActions extends StatelessWidget {
-  const QuickActions({super.key, required this.currency});
+/// White card holding the six service shortcuts in a 3×2 grid.
+class ServicesCard extends StatelessWidget {
+  const ServicesCard({super.key});
 
-  final String currency;
-
-  static const _items = <_Action>[
-    _Action(Iconsax.send_2, 'Send Money'),
-    _Action(Iconsax.money_recive, 'Withdraw'),
-    _Action(Iconsax.mobile, 'Buy Airtime'),
-    _Action(Iconsax.receipt_item, 'Pay Bill'),
-    _Action(Iconsax.shop, 'Buy Goods'),
-    _Action(Iconsax.people, 'Group Pay'),
-    _Action(Iconsax.wallet_money, 'Loans & Save'),
-    _Action(Iconsax.category, 'More'),
+  static const _items = <_Service>[
+    _Service(Iconsax.shop, AppStrings.merchantPayment),
+    _Service(Iconsax.receipt_item, AppStrings.billPayment),
+    _Service(Iconsax.wallet_money, AppStrings.creditAndSaving),
+    _Service(Iconsax.send_2, AppStrings.transferMoney),
+    _Service(Iconsax.mobile, AppStrings.airtimePackage),
+    _Service(Iconsax.category, AppStrings.moreServices),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+      margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
@@ -37,29 +34,27 @@ class QuickActions extends StatelessWidget {
         ],
       ),
       child: GridView.count(
-        crossAxisCount: 4,
+        crossAxisCount: 3,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         mainAxisSpacing: 18,
-        childAspectRatio: 0.82,
-        children: [
-          for (final a in _items) _QuickActionButton(action: a),
-        ],
+        childAspectRatio: 0.95,
+        children: [for (final s in _items) _ServiceButton(service: s)],
       ),
     );
   }
 }
 
-class _Action {
-  const _Action(this.icon, this.label);
+class _Service {
+  const _Service(this.icon, this.label);
   final IconData icon;
   final String label;
 }
 
-class _QuickActionButton extends StatelessWidget {
-  const _QuickActionButton({required this.action});
+class _ServiceButton extends StatelessWidget {
+  const _ServiceButton({required this.service});
 
-  final _Action action;
+  final _Service service;
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +71,11 @@ class _QuickActionButton extends StatelessWidget {
               color: AppColors.primary.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(action.icon, color: AppColors.primary, size: 22),
+            child: Icon(service.icon, color: AppColors.primary, size: 22),
           ),
           const SizedBox(height: 8),
           Text(
-            action.label,
+            service.label,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 11,

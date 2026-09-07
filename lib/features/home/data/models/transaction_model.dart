@@ -7,6 +7,7 @@ class TransactionModel extends TransactionEntity {
     required super.subtitle,
     required super.amount,
     required super.type,
+    required super.channel,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class TransactionModel extends TransactionEntity {
       type: (json['type'] as String?) == 'received'
           ? TransactionType.received
           : TransactionType.sent,
+      channel: json['channel'] as String? ?? 'M-PESA',
     );
   }
 
@@ -27,5 +29,6 @@ class TransactionModel extends TransactionEntity {
         'subtitle': subtitle,
         'amount': amount,
         'type': type.name,
+        'channel': channel,
       };
 }

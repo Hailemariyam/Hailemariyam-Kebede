@@ -6,12 +6,17 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../auth/domain/entities/user.dart';
 
-/// White card overlapping the header, showing the real account balance with a
-/// hide/reveal toggle.
+/// Primary-red wallet card: Main Balance with a hide/reveal toggle, an
+/// "+ Add Money" black pill button, and a Reward / Exit balance row.
 class BalanceCard extends StatefulWidget {
-  const BalanceCard({super.key, required this.user});
+  const BalanceCard({
+    super.key,
+    required this.user,
+    this.onAddMoney,
+  });
 
   final User user;
+  final VoidCallback? onAddMoney;
 
   @override
   State<BalanceCard> createState() => _BalanceCardState();
@@ -20,78 +25,90 @@ class BalanceCard extends StatefulWidget {
 class _BalanceCardState extends State<BalanceCard> {
   bool _hidden = true;
 
+  String get _currency => widget.user.currency;
+
   @override
   Widget build(BuildContext context) {
-    final currency = widget.user.currency;
-    final balance = Formatters.money(widget.user.balance);
+    final mainBalance =
+        _hidden ? AppStrings.hiddenAmount : Formatters.money(widget.user.balance);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: AppColors.primary.withValues(alpha: 0.28),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Text(
-                AppStrings.balanceLabel,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () => setState(() => _hidden = !_hidden),
-                borderRadius: BorderRadius.circular(20),
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Icon(
-                    _hidden ? Iconsax.eye_slash : Iconsax.eye,
-                    size: 20,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _hidden ? '$currency ••••••' : '$currency $balance',
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 26,
-              fontWeight: FontWeight.w800,
+          const Text(
+            AppStrings.mainBalance,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 16),
-          const Divider(height: 1, color: AppColors.divider),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
-                child: _MiniStat(
-                  label: 'Fuliza limit',
-                  value: _hidden ? '••••' : '$currency 3,000',
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        _hidden ? mainBalance : '$_currency $mainBalance',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () => setState(() => _hidden = !_hidden),
+                      borderRadius: BorderRadius.circular(20),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Icon(
+                          _hidden ? Iconsax.eye_slash : Iconsax.eye,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Container(width: 1, height: 32, color: AppColors.divider),
+              const SizedBox(width: 12),
+              _AddMoneyButton(onTap: widget.onAddMoney),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
               Expanded(
-                child: _MiniStat(
-                  label: 'Savings',
-                  value: _hidden ? '••••' : '$currency 12,400',
+                child: _SubBalance(
+                  label: AppStrings.rewardBalance,
+                  value: _hidden ? AppStrings.hiddenShort : '$_currency 250',
+                ),
+              ),
+              Expanded(
+                child: _SubBalance(
+                  label: AppStrings.exitBalance,
+                  value: _hidden ? AppStrings.hiddenShort : '$_currency 0',
                 ),
               ),
             ],
@@ -102,8 +119,44 @@ class _BalanceCardState extends State<BalanceCard> {
   }
 }
 
-class _MiniStat extends StatelessWidget {
-  const _MiniStat({required this.label, required this.value});
+class _AddMoneyButton extends StatelessWidget {
+  const _AddMoneyButton({this.onTap});
+
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Iconsax.add, size: 16, color: Colors.white),
+              SizedBox(width: 6),
+              Text(
+                AppStrings.addMoney,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SubBalance extends StatelessWidget {
+  const _SubBalance({required this.label, required this.value});
 
   final String label;
   final String value;
@@ -111,16 +164,20 @@ class _MiniStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.85),
+            fontSize: 12,
+          ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 3),
         Text(
           value,
           style: const TextStyle(
-            color: AppColors.textPrimary,
+            color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w700,
           ),

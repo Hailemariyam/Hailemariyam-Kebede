@@ -181,7 +181,8 @@ void main() {
 
     expect(jsonDecode(sentBody!), {'pin': '1111'});
     expect(find.byType(HomePage), findsOneWidget);
-    expect(find.text('John Doe'), findsOneWidget);
+    // The home header greets the user by first name.
+    expect(find.text('John'), findsOneWidget);
   });
 
   testWidgets('API error surfaces the message and resets the PIN',
