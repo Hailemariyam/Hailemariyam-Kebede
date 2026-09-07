@@ -7,8 +7,8 @@ import '../../../../core/utils/formatters.dart';
 import '../../../auth/domain/entities/user.dart';
 
 /// Primary-red wallet card: Main Balance with an "+ Add Money" black pill
-/// button, a Reward / Exit balance row, and a hide/reveal eye toggle anchored
-/// to the bottom-right corner.
+/// button in the top-right corner, a Reward / Exit balance row, and a
+/// hide/reveal eye toggle anchored to the bottom-right corner.
 class BalanceCard extends StatefulWidget {
   const BalanceCard({
     super.key,
@@ -50,33 +50,34 @@ class _BalanceCardState extends State<BalanceCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            AppStrings.mainBalance,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 8),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
+              const Expanded(
                 child: Text(
-                  _hidden ? mainBalance : '$_currency $mainBalance',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  AppStrings.mainBalance,
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 1,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               _AddMoneyButton(onTap: widget.onAddMoney),
             ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _hidden ? mainBalance : '$_currency $mainBalance',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1,
+            ),
           ),
           const SizedBox(height: 20),
           Row(
