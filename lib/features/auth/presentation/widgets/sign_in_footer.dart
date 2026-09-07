@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
-/// One-row footer of tappable text links: Forgot PIN (brand red) · Contact us ·
-/// Terms & Conditions.
+/// One-row footer of tappable links: Forgot PIN (brand red) · Contact us
+/// (with a headset icon) · Terms & Conditions (with a document icon).
 class SignInFooter extends StatelessWidget {
   const SignInFooter({
     super.key,
@@ -24,9 +25,17 @@ class SignInFooter extends StatelessWidget {
       children: [
         _link(AppStrings.forgotPin, onForgotPin, color: AppColors.primary),
         _dot(),
-        _link(AppStrings.contactUs, onContactUs),
+        _link(
+          AppStrings.contactUs,
+          onContactUs,
+          trailingIcon: Iconsax.headphone,
+        ),
         _dot(),
-        _link(AppStrings.termsAndConditions, onTerms),
+        _link(
+          AppStrings.termsAndConditions,
+          onTerms,
+          trailingIcon: Iconsax.document_text,
+        ),
       ],
     );
   }
@@ -40,19 +49,34 @@ class SignInFooter extends StatelessWidget {
         ),
       );
 
-  Widget _link(String label, VoidCallback? onTap, {Color? color}) {
+  Widget _link(
+    String label,
+    VoidCallback? onTap, {
+    Color? color,
+    IconData? trailingIcon,
+  }) {
+    final tint = color ?? AppColors.textSecondary;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(6),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: color ?? AppColors.textSecondary,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: tint,
+              ),
+            ),
+            if (trailingIcon != null) ...[
+              const SizedBox(width: 4),
+              Icon(trailingIcon, size: 13, color: tint),
+            ],
+          ],
         ),
       ),
     );

@@ -86,27 +86,24 @@ class _SignInView extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 28),
-                      Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(
-                          Iconsax.lock_1,
-                          color: AppColors.primary,
-                          size: 26,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      const Text(
-                        AppStrings.signInTitle,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Iconsax.lock_1,
+                            color: AppColors.textPrimary,
+                            size: 18,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            AppStrings.signInTitle,
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       PinDots(
