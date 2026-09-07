@@ -59,13 +59,19 @@ class SignInHeader extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(24, topInset + 28, 24, 28),
               child: Column(
                 children: [
-                  const Text(
-                    AppStrings.appName,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 3,
+                  Image.asset(
+                    AppAssets.logo,
+                    height: 34,
+                    fit: BoxFit.contain,
+                    semanticLabel: AppStrings.appName,
+                    errorBuilder: (context, error, stack) => const Text(
+                      AppStrings.appName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 3,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 18),
