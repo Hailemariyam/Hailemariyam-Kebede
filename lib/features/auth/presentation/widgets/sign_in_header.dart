@@ -1,100 +1,165 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 
-/// Brand-red header block with rounded bottom corners: the M-PESA wordmark,
-/// a "Welcome back" line, and a name / phone row fronted by a circle avatar.
+/// Brand-red header block with rounded bottom corners, overlaid with the
+/// decorative pattern background: the M-PESA wordmark, a "Welcome back" line,
+/// and a name / phone row fronted by a real avatar image.
 class SignInHeader extends StatelessWidget {
   const SignInHeader({
     super.key,
     required this.name,
     required this.phoneNumber,
+    this.avatarUrl = _defaultAvatarUrl,
   });
+
+  static const String _defaultAvatarUrl =
+      'https://i.pravatar.cc/160?img=68';
 
   final String name;
   final String phoneNumber;
+  final String avatarUrl;
 
   @override
   Widget build(BuildContext context) {
     final topInset = MediaQuery.of(context).padding.top;
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(24, topInset + 28, 24, 28),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
-        ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(32),
+        bottomRight: Radius.circular(32),
       ),
-      child: Column(
-        children: [
-          const Text(
-            AppStrings.appName,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 30,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 3,
-            ),
+      child: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.primary, AppColors.primaryDark],
           ),
-          const SizedBox(height: 18),
-          const Text(
-            'Welcome back',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 14),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: Colors.white,
-                child: Text(
-                  Formatters.initials(name),
-                  style: const TextStyle(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                  ),
+        ),
+        child: Stack(
+          children: [
+            // Decorative pattern, anchored to the top-right, kept subtle.
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.18,
+                child: Image.asset(
+                  AppAssets.patternBackground,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topRight,
+                  colorBlendMode: BlendMode.screen,
                 ),
               ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, topInset + 28, 24, 28),
+              child: Column(
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
+                  const Text(
+                    AppStrings.appName,
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 3,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    Formatters.phone(phoneNumber),
+                  const SizedBox(height: 18),
+                  const Text(
+                    AppStrings.welcomeBack,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 13,
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _Avatar(url: avatarUrl, fallbackInitials:
+                          Formatters.initials(name)),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            Formatters.phone(phoneNumber),
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.85),
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Circular network avatar with a graceful loading and error fallback.
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.url, required this.fallbackInitials});
+
+  final String url;
+  final String fallbackInitials;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 44,
+      height: 44,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return const Center(
+            child: SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, error, stack) => Center(
+          child: Text(
+            fallbackInitials,
+            style: const TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

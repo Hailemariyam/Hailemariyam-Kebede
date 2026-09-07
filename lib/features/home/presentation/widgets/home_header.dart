@@ -36,15 +36,26 @@ class HomeHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.white,
-            child: Text(
-              Formatters.initials(user.name),
-              style: const TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
+          Container(
+            width: 48,
+            height: 48,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Image.network(
+              'https://i.pravatar.cc/160?img=68',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stack) => Center(
+                child: Text(
+                  Formatters.initials(user.name),
+                  style: const TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           ),
