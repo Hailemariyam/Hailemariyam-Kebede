@@ -8,12 +8,19 @@ class AppStrings {
   static const String splashTagline = 'from Safaricom';
 
   // Sign-in
-  static const String signInTitle = 'Enter M-PESA PIN';
+  static const String signInTitle = 'Enter Your M-PESA PIN';
   static const String signInSubtitle =
       'Enter your 4-digit M-PESA PIN to securely access your account.';
+  static const String welcomeBack = 'Welcome back';
   static const String pinFieldLabel = 'M-PESA PIN';
-  static const String signInCta = 'Sign In';
-  static const String forgotPin = 'Forgot PIN?';
+  static const String signInCta = 'Continue';
+  static const String forgotPin = 'Forgot PIN';
+  static const String contactUs = 'Contact us';
+  static const String termsAndConditions = 'Terms & Conditions';
+
+  // Placeholder identity shown before the API returns the real user.
+  static const String placeholderName = 'Hailemariyam Kebede';
+  static const String placeholderPhone = '+251700000000';
 
   // Validation
   static const String pinRequired = 'Please enter your PIN';

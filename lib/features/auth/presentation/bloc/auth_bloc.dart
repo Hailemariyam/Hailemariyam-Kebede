@@ -65,6 +65,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(state.copyWith(
         status: AuthStatus.failure,
+        // Reset the PIN entry so the user re-enters after a failed attempt.
+        pin: '',
+        isPinValid: false,
+        pinError: () => null,
         errorMessage: () => failure.message,
       )),
       (session) => emit(state.copyWith(
