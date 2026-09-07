@@ -82,93 +82,107 @@ class _SignInView extends StatelessWidget {
                 phoneNumber: AppStrings.placeholderPhone,
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 28),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Iconsax.lock_1,
-                            color: AppColors.textPrimary,
-                            size: 18,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            AppStrings.signInTitle,
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      PinDots(
-                        length: SignInPage.pinLength,
-                        filledCount: filled,
-                        hasError: showError,
-                      ),
-                      SizedBox(
-                        height: 22,
-                        child: message == null
-                            ? null
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(
-                                  message,
-                                  style: const TextStyle(
-                                    color: AppColors.error,
-                                    fontSize: 12.5,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                      ),
-                      const SizedBox(height: 8),
-                      NumberKeypad(
-                        enabled: !state.isLoading,
-                        onDigit: (d) => _onDigit(context, d),
-                        onBackspace: () => _onBackspace(context),
-                      ),
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: state.isPinValid && !state.isLoading
-                                ? () => _submit(context)
-                                : null,
-                            child: state.isLoading
-                                ? const SizedBox(
-                                    width: 22,
-                                    height: 22,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.4,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: IntrinsicHeight(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 24, 16, 20),
+                            child: Column(
+                              children: [
+                                const Spacer(flex: 2),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Iconsax.lock_1,
+                                      color: AppColors.textPrimary,
+                                      size: 18,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      AppStrings.signInTitle,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
                                       ),
                                     ),
-                                  )
-                                : const Text(AppStrings.signInCta),
+                                  ],
+                                ),
+                                const SizedBox(height: 22),
+                                PinDots(
+                                  length: SignInPage.pinLength,
+                                  filledCount: filled,
+                                  hasError: showError,
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                  child: message == null
+                                      ? null
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          child: Text(
+                                            message,
+                                            style: const TextStyle(
+                                              color: AppColors.error,
+                                              fontSize: 12.5,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                                const Spacer(flex: 3),
+                                NumberKeypad(
+                                  enabled: !state.isLoading,
+                                  onDigit: (d) => _onDigit(context, d),
+                                  onBackspace: () => _onBackspace(context),
+                                ),
+                                const SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: state.isPinValid &&
+                                              !state.isLoading
+                                          ? () => _submit(context)
+                                          : null,
+                                      child: state.isLoading
+                                          ? const SizedBox(
+                                              width: 22,
+                                              height: 22,
+                                              child:
+                                                  CircularProgressIndicator(
+                                                strokeWidth: 2.4,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
+                                              ),
+                                            )
+                                          : const Text(AppStrings.signInCta),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                SignInFooter(
+                                  onForgotPin: () {},
+                                  onContactUs: () {},
+                                  onTerms: () {},
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 14),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: SignInFooter(
-                          onForgotPin: () {},
-                          onContactUs: () {},
-                          onTerms: () {},
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
             ],
