@@ -75,15 +75,6 @@ class SignInHeader extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 18),
-                  const Text(
-                    AppStrings.welcomeBack,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -91,15 +82,23 @@ class SignInHeader extends StatelessWidget {
                         fallbackInitials: Formatters.initials(name),
                         url: avatarUrl,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const Text(
+                            AppStrings.welcomeBack,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                           Text(
                             name,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -125,11 +124,12 @@ class SignInHeader extends StatelessWidget {
   }
 }
 
-/// Small circular network avatar with a graceful loading and error fallback.
+/// Circular network avatar, sized to align with the welcome / name / phone
+/// column beside it. Has a graceful loading and error fallback.
 class _Avatar extends StatelessWidget {
   const _Avatar({required this.url, required this.fallbackInitials});
 
-  static const double _size = 34;
+  static const double _size = 46;
 
   final String url;
   final String fallbackInitials;
@@ -166,7 +166,7 @@ class _Avatar extends StatelessWidget {
             style: const TextStyle(
               color: AppColors.primary,
               fontWeight: FontWeight.w700,
-              fontSize: 13,
+              fontSize: 16,
             ),
           ),
         ),
