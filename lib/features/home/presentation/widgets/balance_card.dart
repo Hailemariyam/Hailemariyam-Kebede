@@ -6,8 +6,9 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../auth/domain/entities/user.dart';
 
-/// Primary-red wallet card: Main Balance with a hide/reveal toggle, an
-/// "+ Add Money" black pill button, and a Reward / Exit balance row.
+/// Primary-red wallet card: Main Balance with an "+ Add Money" black pill
+/// button, a Reward / Exit balance row, and a hide/reveal eye toggle anchored
+/// to the bottom-right corner.
 class BalanceCard extends StatefulWidget {
   const BalanceCard({
     super.key,
@@ -61,35 +62,16 @@ class _BalanceCardState extends State<BalanceCard> {
           Row(
             children: [
               Expanded(
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        _hidden ? mainBalance : '$_currency $mainBalance',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    InkWell(
-                      onTap: () => setState(() => _hidden = !_hidden),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Icon(
-                          _hidden ? Iconsax.eye_slash : Iconsax.eye,
-                          size: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  _hidden ? mainBalance : '$_currency $mainBalance',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -98,6 +80,7 @@ class _BalanceCardState extends State<BalanceCard> {
           ),
           const SizedBox(height: 20),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
                 child: _SubBalance(
@@ -109,6 +92,19 @@ class _BalanceCardState extends State<BalanceCard> {
                 child: _SubBalance(
                   label: AppStrings.exitBalance,
                   value: _hidden ? AppStrings.hiddenShort : '$_currency 0',
+                ),
+              ),
+              // Hide / reveal toggle, anchored to the bottom-right of the card.
+              InkWell(
+                onTap: () => setState(() => _hidden = !_hidden),
+                borderRadius: BorderRadius.circular(20),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    _hidden ? Iconsax.eye_slash : Iconsax.eye,
+                    size: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
