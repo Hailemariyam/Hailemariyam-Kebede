@@ -31,7 +31,7 @@ class AppStrings {
   static const String mainBalance = 'Main Balance';
   static const String addMoney = 'Add Money';
   static const String rewardBalance = 'Reward Balance';
-  static const String exitBalance = 'Exit Balance';
+  static const String exitBalance = 'Erif Balance';
   static const String hiddenAmount = '••••••••';
   static const String hiddenShort = '••••';
   static const String services = 'Services';

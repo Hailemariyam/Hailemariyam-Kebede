@@ -37,8 +37,8 @@ class ServicesCard extends StatelessWidget {
         crossAxisCount: 3,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        mainAxisSpacing: 18,
-        childAspectRatio: 0.95,
+        mainAxisSpacing: 20,
+        childAspectRatio: 0.88,
         children: [for (final s in _items) _ServiceButton(service: s)],
       ),
     );
@@ -65,20 +65,20 @@ class _ServiceButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 46,
-            height: 46,
+            width: 54,
+            height: 54,
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(service.icon, color: AppColors.primary, size: 22),
+            child: Icon(service.icon, color: AppColors.primary, size: 26),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
             service.label,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: 12.5,
               height: 1.2,
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w500,
